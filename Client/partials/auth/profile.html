@@ -1,0 +1,304 @@
+<div class="container">
+  <div ng-controller="ProfileCtrl">
+
+    <div class="row">
+      <!-----------------------------------------   jumbotron   -------------------->
+      <div class="col-md-12 col-sm-12 col-lg-12 jumbotron">
+        <div class="pull-left">
+          <img src="{{userConn.picture}}" alt="..." class="img-rounded pr-pic">
+          <div class="margtwo text-center">
+            <div file-upload class="element">
+              <button id="openFile" class="btn btn-default btn-xs"><i class="fa fa-paperclip "></i>Chosir</button>
+              <input file-model="myFile" type="file" name="myfile" id="inputfile">
+              <button type="submit" ng-click="picture()" class="btn btn-default btn-xs">Changer</button><br>
+              <small class="name"></small>
+            </div>
+          </div>
+        </div>
+        <div class="col-offset-2 col-md-8">
+
+          <ul class="nav nav-pills navpills" role="tablist">
+            <li role="presentation" class="active"><a data-target="#profile" aria-controls="profile" role="tab" data-toggle="tab"><strong><small>Profile</small></strong></a></li>
+            <li role="presentation"><a data-target="#apropos" aria-controls="apropos" role="tab" data-toggle="tab"><strong><small>À propos</small></strong></a></li>
+            <li role="presentation"><a data-target="#ic" aria-controls="ic" role="tab" data-toggle="tab"><strong><small>Cmpts & Itrts</small></strong></a></li>
+            <li role="presentation"><a data-target="#settings" aria-controls="settings" role="tab" data-toggle="tab"><strong><small>Settings</small></strong></a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+
+            <div role="tabpanel" class="tab-pane active" id="profile" style=" padding-left: 20px;"> <br>
+              <strong class="lus">{{userConn.last_name}} {{userConn.first_name}}</strong><br>
+              <strong class="lus"> ({{userConn.username}})</strong>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="apropos">
+              <form name="profileForm">
+                <!-- <div class="col-md-10"> -->
+                <div class="form-inline">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <!-- <span class="input-group-addon" id="basic-addon1"><i class="fa fa-user"></i></span> -->
+                      <div class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></div>
+                      <input type="text" class="form-control input-sm " ng-model="user.username" value="{{userConn.username}}" placeholder="{{userConn.username}}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></div>
+                      <input type="text" class="form-control input-sm " value="{{userConn.email}}" placeholder="{{userConn.email}}" disabled>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <span class="input-group-addon" id="basic-addon1">P</i></span>
+                      <input type="text" class="form-control input-sm " ng-model="user.first_name" value="{{userConn.first_name}}" placeholder="{{userConn.first_name}}">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-inline">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span></div>
+                      <input type="text" class="form-control input-sm " value="{{userConn.created |date}}" placeholder="{{userConn.created |date}}" disabled>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <div class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-phone-alt" aria-hidden="true"></span></div>
+                      <input type="text" class="form-control input-sm " ng-model="user.phone" value="{{userConn.phone}}" placeholder="{{userConn.phone}}">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <span class="input-group-addon" id="basic-addon1">N</i></span>
+                      <input type="text" class="form-control input-sm" ng-model="user.last_name" value="{{userConn.last_name}}" placeholder="{{userConn.last_name}}">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-inline">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <span class="input-group-addon" id="basic-addon1"><i class="fa fa-birthday-cake"></i></span>
+                      <div ng-include="'../partials/birthday.html'"></div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <span class="input-group-addon" id="basic-addon1"><i class="fa fa-transgender"></i></span>
+                      <select class="form-control input-sm" ng-model='user.gender'>
+                                            <option value="">Genre</option>
+                                            <option  ng-selected="{{gender.val == filter.gender}}"
+                                                    ng-repeat="gender in genderOptions"
+                                                    value="{{gender.val}}">
+                                                    {{gender.val}}
+                                            </option>
+                            </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-marker"></i></span>
+                      <input type="text" class="form-control input-sm " ng-model="user.from" value="{{userConn.from}}" placeholder="{{userConn.from}}">
+                    </div>
+                  </div>
+                  <button type="submit" ng-click="updateUser()" class="btn btn-default btn-sm"><i class="fa fa-check"></i></button>
+                </div>
+                <!-- </div> -->
+              </form>
+            </div>
+
+
+            <div role="tabpanel" class="tab-pane" id="ic">
+              <div class="row">
+                <div class="col-md-5">
+                  <form>
+                    <div class="marg text-center">
+                      <span class="label label-default " ng-repeat="tag in userConn.interests">
+                        {{tag.tag}}
+                          <a role="button" class="aCol" ng-click="deleteic(1, tag._id)" name="button"><span class="glyphicon glyphicon-remove"></span></a>
+                      </span>
+                    </div>
+                    <br>
+                </div>
+                <div class="col-md-5">
+                  <div class="marg text-center">
+                    <span class="label label-default " ng-repeat="tag in userConn.skills">
+                      {{tag.tag}}
+                      <a role="button" class="aCol" ng-click="deleteic(2, tag._id)" name="button"><span class="glyphicon glyphicon-remove"></span></a>
+                    </span>
+                  </div><br>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="input-group input-group-sm in-marg">
+                    <input type="text" class="form-control" ng-model='user.int' id="int" placeholder="Ajouter...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-default" ng-click='updateic(user)' type="button"><span class="glyphicon glyphicon-plus"></button>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="input-group input-group-sm in-marg">
+                    <input type="text" class="form-control" ng-model='user.com' id="com" placeholder="Ajouter...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default"  ng-click='updateic(user)' type="button"><span class="glyphicon glyphicon-plus"></span></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="">
+          tara
+        </div>
+      </div>
+      <!-- <ul class="ul" >
+                          <li><i class="fa fa-envelope"> </i>&nbsp;{{userConn.email}}</li>
+                          <li><i class="fa fa-user"></i> &nbsp; Username</li>
+                          <li><i class="fa fa-clock-o"></i> &nbsp; Join</li>
+                        </ul> -->
+
+      <!--  Collapsing pannels -->
+      <div class="row">
+        <!----------------------------------------   Collapsing pannles            -->
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  Collapsible Group Item #1
+                </a>
+              </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  1
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  Collapsible Group Item #2
+                </a>
+              </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                  2
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Collapsible Group Item #3
+                </a>
+              </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                  3
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!----------------------------------------------------   thumbnails   -->
+        <!-- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <a href="" class="thumbnail thumpr">
+            <img src="../includes/img/cover1.jpg" alt="myCover1InThumbnail">
+          </a>
+          <h3>Theme 1</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <a href="" class="btn btn-primary"> View </a>
+        </div> -->
+        <div class="col-lg-6 col-md-6 ">
+          <div ng-show="postLength" class="alert alert-info alert-dismissible text-center" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <label>{{postmessage}}</label>
+          </div>
+          <div ng-repeat="post in posts">
+            <div class="thumbnail">
+              <div class="caption">
+                <div class="row">
+                  <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10">
+                    <div class="media">
+                      <div class="media-left pull-left ">
+                        <a href="#">
+                          <img class="media-object user-pic" src="{{userConn.picture}}" alt="...">
+                        </a>
+                      </div>
+                        <strong>{{post.account.username}}</strong>
+                      <div class="media-body">
+                      <!--  <strong class="media-heading">{{post.account.username}}</strong><br>-->
+                        <small>{{post.created |date}}</small><br>
+                      </div>
+                    </div><br>
+                  </div>
+                  <div class="col-md-2 col-md-2 col-sm-2 col-lg-2 col-xs-2">
+                    <div class="pull-right">
+                      <div class="dropdown">
+                        <a id="dLabel" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span <i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right tiny" aria-labelledby="dLabel">
+                          <li><a type="button" ng-click="deletePost(post._id)">Delete</a></li>
+                          <li><a ng-href="">Another action</a></li>
+                          <li><a ng-href="">Something else</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="lus" ng-hide="{{post.desc === 'undefined'}}"> {{post.desc}} </p>
+              </div>
+              <div ng-if="post.mime.includes('image')">
+                <img src="{{post.path}}" alt="...">
+              </div>
+              <div ng-if="post.mime.includes('video')">
+                <video controls>
+                  <source src="{{post.path}}" type="video/mp4" >
+                  <source src="{{post.path}}" type="video/webm" >
+                  </video>
+              </div>
+              <div class="row" ng-if="post.mime.includes('application')">
+                <!-- <object data="{{post.path}}" type="{{post.mime}}" title="doc" ></object> -->
+                <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10">
+                  <div class="media">
+                    <div class="media-left pull-left ">
+                      <a href="{{post.path}}">
+                        <img class="media-object doc-pic" src="./includes/img/docs.png" alt="...">
+                      </a>
+                    </div>
+                      <strong>{{post.original}}</strong>
+                    <div class="media-body">
+                      <!--<strong class="media-heading">{{post.original}}</strong><br>-->
+                      <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                        <a href="{{post.path}}" type="button" TARGET="_blank" class="btn btn-default">Ouvrir</a>
+                        <a href="{{post.path}}" download="{{post.original}}" type="button" class="btn btn-default">Telecharger</a>
+                      </div>
+                    </div>
+                  </div><br>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>

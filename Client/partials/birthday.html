@@ -1,0 +1,24 @@
+<select class="form-control input-sm" ng-model='user.date.day'>
+    <option value="">Day</option>
+    <option  ng-selected="{{day.val == filter.day}}"
+            ng-repeat="day in dayOptions"
+            value="{{day.val}}">
+            {{day.val}}
+    </option>
+</select>
+<select class="form-control input-sm" ng-model='user.date.month'>
+    <option value="">Month</option>
+    <option  ng-selected="{{month.val == filter.month}}"
+            ng-repeat="month in monthOptions"
+            value="{{month.val}}">
+            {{month.val}}
+    </option>
+</select>
+<select class="form-control input-sm" ng-model='user.date.year'>
+    <option value="">Year</option>
+    <option  ng-selected="{{year.val == filter.year}}"
+            ng-repeat="year in yearOptions"
+            value="{{year.val}}">
+            {{year.val}}
+    </option>
+</select>

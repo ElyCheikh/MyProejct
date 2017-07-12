@@ -1,0 +1,38 @@
+<div class="container">
+  <div ng-controller="PassRecoveryEmailCtrl">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 ">
+        <br><br><br><br>
+        <div class="jumbotron">
+          <div ng-show="verified" class="alert alert-info alert-dismissible text-center" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <label>{{alertMessage}}</label>
+          </div>
+          <div ng-show="invalid" class="alert alert-danger alert-dismissible text-center" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <label>{{alertMessage}}</label>
+          </div>
+          <form>
+            <div class="form-inline">
+              <label for="Password">Password</label><br>
+              <!--ajouter pour avoir password en haut des forms pass et conf-->
+              <div class="form-group">
+                <label class="sr-only" for="Password">Password</label>
+                <input type="password" class="form-control" ng-model='user.pass' id="pass" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <label class="invisible" for="!mouhim">s</label>
+                <!--espace entre les forms pass et conf -->
+                <label class="sr-only" for="ConfirmPassword">Confirm</label>
+                <input type="password" class="form-control" ng-model='user.confPass' id="confPass" placeholder="Confrim">
+              </div>
+            </div><br>
+            <div class="text-center">
+                <button type="button" ng-click='changePassword()' class="btn btn-primary">Change my password</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

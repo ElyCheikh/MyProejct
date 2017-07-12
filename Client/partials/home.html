@@ -1,0 +1,434 @@
+<div class="container">
+  <div ng-controller="HomeCtrl">
+    <div class="row">
+      <div class="col-md-3 ">
+        <div data-spy="affix" data-offset-top="60">
+          <div class="well well-sm homewell"><a href="#/profile"><strong>{{userConn.first_name}} {{userConn.last_name}}</strong></a></div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              Basic panel example
+            </div>
+          </div>
+
+          <div class="well well-sm homewell"><strong>Raccourcis</strong></div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              Basic panel example
+            </div>
+          </div>
+
+          <div class="well well-sm homewell"><strong>Explorer</strong></div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              Basic panel example
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!--  posts  posts  posts  posts  posts posts  posts  posts posts  posts  posts  posts  -->
+      <div class="col-md-6 col-md-offset-0">
+        <!-- <div class="well well-sm homewell"><strong>Bonjour {{userConn.first_name}}</strong></div> -->
+        <form>
+          <div class="media">
+            <div class="media-left m">
+              <a href="#/profile">
+                <img class="media-object home-pic" src="{{userConn.picture}}" alt="...">
+              </a>
+            </div>
+            <div class="media-body">
+              <div file-upload class="textarea-container">
+                <textarea msd-elastic type="text-area" class="form-control" rows="3" cols="3" ng-model='desc' id="desc" placeholder="Exprimez-vous"> </textarea>
+                <div class="element">
+                  <button id="openFile" class="btn btn-default btn-xs"><i class="fa fa-paperclip "></i> Pièce jointe</button> <small class="name"></small>
+                  <input file-model="myFile" type="file" name="myfile" id="inputfile">
+                  <div class="pull-right"><button type="submit" ng-click='post()' class="btn btn-default btn-xs">Publier </button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form><br>
+
+        <div ng-show="postLength" class="alert alert-info alert-dismissible text-center" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <label>{{postmessage}}</label>
+        </div>
+        <div ng-show="isLoading" class="text-center">
+          <i class="fa fa-spinner fa-2x"></i>
+        </div>
+        <div infinite-scroll="nextPage()" inifinite-scroll-disabled="busy || noMorePosts" infinifte-scroll-distance="0.9" infinite-scroll-listen-for-event="posts:morfirst">
+          <div ng-repeat="(key, post) in posts">
+            <div class="thumbnail">
+              <div class="caption">
+                <div class="row">
+                  <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10">
+                    <div class="media">
+                      <!-- not shared -->
+                      <div ng-if='!post.shareaccount'>
+                        <div class="media-left pull-left ">
+                          <div ng-if="userConn._id == post.account._id">
+                            <a href="#/profile"><img class="postmediapicture media-object user-pic" src="{{post.account.picture}}" alt="..."> </a>
+                          </div>
+                          <div ng-if="userConn._id != post.account._id">
+                            <a href="#/viewprofile/{{post.account._id}}"><img class="postmediapicture media-object user-pic" src="{{post.account.picture}}" alt="..."> </a>
+                          </div>
+                        </div>
+
+                        <div class="media-body">
+                          <div ng-if="userConn._id == post.account._id">
+                            <a href="#/profile"><strong class="media-heading ">{{post.account.username}}</strong></a><br>
+                          </div>
+                          <div ng-if="userConn._id != post.account._id">
+                            <a href="#/viewprofile/{{post.account._id}}"><strong class=" media-heading">{{post.account.username}}</strong></a><br>
+                          </div>
+                          <small class="" ng-if="(Date | date:'dd/MM/yyyy') == (post.created | date:'dd/MM/yyyy')">
+                              {{post.created | date : 'HH:mm'}}<br>
+                            </small>
+                          <small class="" ng-if="(Date | date:'dd/MM/yyyy') != (post.created | date:'dd/MM/yyyy') ">
+                            {{post.created | date}}
+                            </small><br>
+                        </div>
+                      </div>
+                      <!-- end not shared -->
+
+                      <!-- shared -->
+                      <div ng-if='post.shareaccount'>
+                        <div class="media-left pull-left ">
+                          <a href="#/profile" ng-if="userConn._id == post.shareaccount._id"><img class="postmediapicture media-object user-pic" src="{{post.shareaccount.picture}}" alt="..."> </a>
+                          <a href="#/viewprofile/{{post.shareaccount._id}}" ng-if="userConn._id != post.shareaccount._id"><img class="postmediapicture media-object user-pic" src="{{post.shareaccount.picture}}" alt="..."> </a>
+                        </div>
+                        <div class="media-body">
+                          <div ng-if="userConn._id == post.shareaccount._id" style="float:left;">
+                            <a href="#/profile">
+                              <strong>{{post.shareaccount.username}}&nbsp;</strong></a>
+                            <small>a partager la publication de&nbsp; </small>
+                          </div>
+                          <div ng-if="userConn._id != post.shareaccount._id" style="float:left;">
+                            <a href="#/viewprofile/{{post.shareaccount._id}}">
+                              <strong class="media-heading ">{{post.shareaccount.username}}&nbsp;</strong></a>
+                            <small>a partager la publication de&nbsp; </small>
+                          </div>
+                          <div ng-if="userConn._id == post.account._id" >
+                            <a href="#/profile">
+                              <strong>{{post.account.username}}</strong></a>
+                          </div>
+                          <div ng-if="userConn._id != post.account._id">
+                            <a href="#/viewprofile/{{post.account._id}}">
+                              <strong class="media-heading ">{{post.account.username}}</strong></a>
+                          </div>
+
+                          <small class="" ng-if="(Date | date:'dd/MM/yyyy') == (post.created | date:'dd/MM/yyyy')">
+                                {{post.created | date : 'HH:mm'}}<br>
+                            </small>
+                          <small class="" ng-if="(Date | date:'dd/MM/yyyy') != (post.created | date:'dd/MM/yyyy') ">
+                                {{post.created | date}}
+                            </small><br>
+                        </div>
+                      </div>
+                      <!-- end shared -->
+                    </div><br>
+                  </div>
+                  <div class="col-md-2 col-md-2 col-sm-2 col-lg-2 col-xs-2">
+                    <div class="pull-right">
+                      <div class="dropdown">
+                        <a id="dLabel" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span <i class="fa fa-chevron-down" aria-hidden="true"> </i></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right tiny" aria-labelledby="dLabel">
+                          <li ng-if="post.account._id == userConn._id"><a type="button" ng-click="deletePost(post._id)">Delete</a></li>
+                          <li ng-if="post.account._id != userConn._id"><a ng-href="">Enregiter</a></li>
+                          <li><a ng-href="">Another action</a></li>
+                          <li><a ng-href="">Something else</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p ng-if="!post.shareaccount" class="luc" ng-hide="{{post.desc === 'undefined'}}"> {{post.desc}} </p>
+                <p ng-if="post.shareaccount" class="lus" ng-hide="{{post.desc === 'undefined'}}"> {{post.sharedesc}} </p>
+
+              </div>
+              <!-- not shared  -->
+              <div ng-if="!post.shareaccount">
+                <div ng-if="post.mime.includes('image')">
+                  <img src="{{post.path}}" alt="...">
+                </div>
+                <div ng-if="post.mime.includes('video')">
+                  <video controls>
+                  <source src="{{post.path}}" type="video/mp4" >
+                  <source src="{{post.path}}" type="video/webm" >
+                  </video>
+                </div>
+                <div class="row" ng-if="post.mime.includes('application')">
+                  <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10">
+                    <div class="media">
+                      <div class="media-left pull-left ">
+                        <a href="{{post.path}}">
+                          <img class="media-object doc-pic" src="./includes/img/docs.png" alt="...">
+                        </a>
+                      </div>
+                      <strong>{{post.original}}</strong>
+                      <div class="media-body">
+                        <!--<strong class="media-heading">{{post.original}}</strong><br>-->
+                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                          <a href="{{post.path}}" type="button" TARGET="_blank" class="btn btn-default">Ouvrir</a>
+                          <a href="{{post.path}}" download="{{post.original}}" type="button" class="btn btn-default">Telecharger</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end not shared -->
+              <!-- shared  -->
+              <div ng-if="post.shareaccount">
+                <div class="thumbnail">
+                  <div class="caption">
+                    <p class="lus" ng-hide="{{post.desc === 'undefined'}}"> {{post.desc}} </p>
+                  </div>
+                  <div ng-if="post.mime.includes('image')">
+                    <img src="{{post.path}}" alt="...">
+                  </div>
+                  <div ng-if="post.mime.includes('video')">
+                    <video controls>
+                    <source src="{{post.path}}" type="video/mp4" >
+                    <source src="{{post.path}}" type="video/webm" >
+                    </video>
+                  </div>
+                  <div class="row" ng-if="post.mime.includes('application')">
+                    <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10">
+                      <div class="media">
+                        <div class="media-left pull-left ">
+                          <a href="{{post.path}}">
+                            <img class="media-object doc-pic" src="./includes/img/docs.png" alt="...">
+                          </a>
+                        </div>
+                        <strong>{{post.original}}</strong>
+                        <div class="media-body">
+                          <!--<strong class="media-heading">{{post.original}}</strong><br>-->
+                          <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <a href="{{post.path}}" type="button" TARGET="_blank" class="btn btn-default">Ouvrir</a>
+                            <a href="{{post.path}}" download="{{post.original}}" type="button" class="btn btn-default">Telecharger</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- end shared -->
+              <div class="line-separator"></div>
+              <!--******************************  LIKES    ******************************** -->
+              <!-- <ul ng-repeat='liker in post.likers'><li>{{liker.username}}</li></ul> -->
+              <div class="likes">
+                <i class="fa fa-thumbs-o-up" popover data-toggle="popover" data-trigger="hover" data-html='true' data-content="<data-content></data-content>">&nbsp;
+                  <strong><small>{{post.likes}}</small></strong></i>
+                <div class="pull-right">
+                  <strong><small>{{post.comments.length}}&nbsp;Commentaires&nbsp;et&nbsp;{{post.shares}}&nbsp;partages</small></strong>
+                </div>
+              </div>
+              <!--******************************   COLLPASE   **************************** -->
+              <div class="panel-group section-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="section-heading panel-heading  " role="tab" id="headingOne">
+                    <div class="panel-title">
+                      <a role="button" ng-click='like(post._id, $index)'>
+                        <strong><small><i class="fa fa-thumbs-up"></i>J'aime</small></strong>
+                      </a>
+                      <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#{{key}}" aria-expanded="true" aria-controls="collapseOne">
+                        <strong><small><i class="fa fa-comment"></i> Commenter</small></strong>
+                      </a>
+                      <a role="button" data-toggle="modal" data-target=".partager" ng-click="getPostKey(key)">
+                        <strong><small><i class="fa fa-share"></i>Partager</small></strong>
+                      </a>
+                    </div>
+                  </div>
+                  <div id="{{key}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="section-body panel-body">
+                      <form>
+                        <div class="media">
+                          <div class="media-left pull-left">
+                            <a href="#/profile">
+                              <img class="media-object comment-pic" src="{{userConn.picture}}" alt="...">
+                            </a>
+                          </div>
+                          <div class="media-body">
+                            <div class="textarea-container">
+                              <form>
+                                <textarea enter-submit-comment msd-elastic type="text-area" class="commentText comment form-control" ng-model="commentaire.content" id="{{post._id}}" placeholder="Comment" required></textarea>
+                                <input type="submit" ng-click='comment(post._id, commentaire, $index, key);  $event.stopPropagation();' id="{{post._id+'input'}}" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                      <div ng-if="post.comments" class="line-separator"></div>
+                      <ul class="media-list ">
+                        <div ng-repeat='(keys, comment) in post.comments'>
+                          <li class=" subCommentList media">
+                            <div class="media-left pull-left">
+                              <a href="#">
+                                <img class="commentmediapicture media-object comment-pic" src="{{comment.account.picture}}" alt="...">
+                              </a>
+                            </div>
+                            <div class="media-body ">
+                              <strong class=" media-heading"><small>{{comment.account.username}}</small></strong>&nbsp;
+                              <small>{{comment.content}}</small>
+                              <!--  Collapse subcomments -->
+                              <div class="panel-group section-group" id="accordionSub" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                  <div class="section-heading-sm panel-heading  " role="tab" id="headingOne">
+                                    <div class="panel-title x-small">
+                                      <a role="button" ng-click='LikeComment()'>
+                                        <small><i class="fa fa-thumbs-up"></i>J'aime</small>
+                                      </a>
+                                      <a role="button" data-toggle="collapse" data-parent="#accordionSub" data-target="#{{comment._id}}" aria-expanded="true" aria-controls="collapseTwo">
+                                        <small><i class="fa fa-comment"></i> Commenter</small>
+                                      </a>
+                                    </div>
+                                  </div>
+                                  <div id="{{comment._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="section-body-sm panel-body">
+                                      <form>
+                                        <div class="media">
+                                          <div class="media-left pull-left">
+                                            <a href="#/profile">
+                                              <img class="media-object subcomment-pic" src="{{userConn.picture}}" alt="...">
+                                            </a>
+                                          </div>
+                                          <div class="media-body">
+                                            <div class="textarea-container">
+                                              <form>
+                                                <textarea enter-submit-subcomment msd-elastic type="text-area" class="subCommentText subcomment form-control" ng-model="subcommentaire.content" id="{{comment._id}}" placeholder="Comment" required></textarea>
+                                                <input type="submit" ng-click='subcomment(post._id, comment._id, subcommentaire, $index, key);  $event.stopPropagation();' id="{{comment._id+'subinput'}}" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1" />
+                                              </form>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </form>
+                                      <div ng-if="comment.subcomments" class="line-separator"></div>
+                                      <ul class="media-list">
+                                        <div ng-repeat='sub in comment.subcomments'>
+                                          <li class="media">
+                                            <div class="media-left pull-left">
+                                              <a href="#">
+                                                <img class=" subcommentmediapicture media-object subcomment-pic" src="{{sub.userpicture}}" alt="...">
+                                              </a>
+                                            </div>
+                                            <div class="media-body">
+                                              <strong class="media-heading"><small>{{sub.username}}</small></strong>&nbsp;
+                                              <small>{{sub.content}}</small>
+                                            </div>
+                                          </li>
+                                        </div>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- End Subcomments -->
+                            </div>
+                          </li>
+                        </div>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div ng-show='busy'>loading...</div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        Something else here...
+      </div>
+    </div>
+
+    <!--     ---------------- Modals --------------- -->
+
+    <div class="modal fade partager" tabindex="-1" role="dialog" aria-labelledby="Partager">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="exampleModalLabel">
+                    Partager la publication de  {{posts[partagerPostKey].account.username}}
+                </h4>
+          </div>
+          <form>
+            <div class="modal-body">
+              <!-- thumbnail-->
+              <div file-upload class="textarea-container">
+                <textarea msd-elastic type="text-area" class="form-control" rows="3" cols="3" ng-model='sharedesc' id="desc" placeholder="Exprimez-vous"> </textarea>
+              </div>
+              <div class="thumbnail">
+                <div class="caption">
+                  <div class="row">
+                    <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10">
+                      <div class="media">
+                        <div class="media-left pull-left ">
+                          <div>
+                            <a><img class="media-object user-pic" src="{{posts[partagerPostKey].account.picture}}" alt="..."> </a>
+                          </div>
+                        </div>
+                        <div class="media-body">
+                          <div>
+                            <a><strong class="media-heading">{{posts[partagerPostKey].account.username}}</strong></a><br>
+                          </div>
+                          <small ng-if="(Date | date:'dd/MM/yyyy') == (posts[partagerPostKey].created | date:'dd/MM/yyyy')">
+                                  {{posts[partagerPostKey].created | date : 'HH:mm'}}<br>
+                                </small>
+                          <small ng-if="(Date | date:'dd/MM/yyyy') != (posts[partagerPostKey].created | date:'dd/MM/yyyy') ">
+                                  {{posts[partagerPostKey].created | date}}
+                                </small><br>
+                        </div>
+                      </div><br>
+                    </div>
+                  </div>
+                  <p class="lus" ng-hide="{{post.desc === 'undefined'}}"> {{posts[partagerPostKey].desc}} </p>
+                  <div ng-if="posts[partagerPostKey].mime.includes('image')">
+                    <img src="{{posts[partagerPostKey].path}}" alt="...">
+                  </div>
+                  <div ng-if="posts[partagerPostKey].mime.includes('video')">
+                    <video controls>
+                            <source src="{{posts[partagerPostKey].path}}" type="video/mp4" >
+                            <source src="{{posts[partagerPostKey].path}}" type="video/webm" >
+                            </video>
+                  </div>
+                  <div class="row" ng-if="posts[partagerPostKey].mime.includes('application')">
+                    <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10">
+                      <div class="media">
+                        <div class="media-left pull-left ">
+                          <a href="{{posts[partagerPostKey].path}}">
+                            <img class="media-object doc-pic" src="./includes/img/docs.png" alt="...">
+                          </a>
+                        </div>
+                        <strong>{{posts[partagerPostKey].original}}</strong>
+                        <div class="media-body">
+                          <!--<strong class="media-heading">{{post.original}}</strong><br>-->
+                          <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                            <a href="{{posts[partagerPostKey].path}}" type="button" TARGET="_blank" class="btn btn-default">Ouvrir</a>
+                            <a href="{{posts[partagerPostKey].path}}" download="{{posts[partagerPostKey].original}}" type="button" class="btn btn-default">Telecharger</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!---->
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" ng-click="share(posts[partagerPostKey])" class="btn btn-primary btn-sm">Partager</button>
+              </div>
+          </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

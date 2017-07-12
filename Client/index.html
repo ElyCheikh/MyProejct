@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html ng-app="yousnippet">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <div ng-hide="nav">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" ng-href="#/">MyProject</a>
+          <a class="navbar-brand"></a>
+          <a class="navbar-brand"></a>
+          <a class="navbar-brand"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-controller="HeaderCtrl">
+          <ul class="nav navbar-nav">
+            <li ng-class="{ active: isActive('/')}"><a ng-href="#/">Home <span class="sr-only">(current)</span></a></li>
+            <li ng-class="{ active: isActive('/accueil')}"><a ng-href="#/accueil">Accueil</a></li>
+            <li ng-class="{ active: isActive('/test')}"><a ng-href="#/test">Test</a></li>
+          </ul>
+          <!-- <form class="navbar-form navbar-left">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default ">Submit</button>
+          </form> -->
+
+          <div ng-hide="auth">
+            <ul class="nav navbar-nav navbar-right">
+              <li><button type="button" class="btn btn-default btn-sm navbar-btn" data-toggle="modal" data-target=".sign-in-modal">sign in</button></li>
+              <a class="navbar-brand"></a>
+              <li><button type="button" class="btn btn-success btn-sm navbar-btn" data-toggle="modal" data-target=".sign-up-modal">sign up</button></li>
+              <a class="navbar-brand"></a>
+            </ul>
+          </div>
+          <div ng-show="auth">
+            <ul class="nav navbar-nav navbar-right notif">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{userConn.username}} <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a ng-href="#/profile">My Profile</a></li>
+                  <li><a href="#">Another action</a></li>
+                  <li><a href="#">Something else here</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a ng-href="#/logout">Log Out</a></li>
+                </ul>
+              </li>
+              <!-- Friend Requests -->
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" ng-click="loadRequests()" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-plus" aria-hidden="true"></i></a>
+                <div class="dropdown-menu vaste">
+                  <div class="well well-sm homewell text-center"><strong><small>Demandes de suivi</small></strong></div>
+                  <div class="list-group nopad">
+                    <div ng-repeat="req in requests">
+                      <a href="#" class="nopad list-group-item active">
+                        <div class="media">
+                          <div class="media-left">
+                              <img class="notif-pic media-object" src="{{req.sender.picture}}" alt="...">
+                          </div>
+                          <div class="media-body">
+                            <div class="media-heading"><small><strong>{{req.sender.username}}&nbsp;</strong>vous a envoyer une demande de suivi</small><br>
+                                <i class="fa fa-clock-o"></i>&nbsp;<small>{{req.created |date}}</small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-success btn-xs" ng-click="confirmReq(req.sender._id)">confirmer</button>&nbsp;<button class="btn btn-danger btn-xs">supprimer</button>
+                            </div>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div><br>
+                  <div class="well well-sm homewell text-center"><strong><small>Suggestions</small></strong></div>
+                      <!-- suggestions  -->
+                </div>
+              </li>
+              <!-- Notification -->
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a>
+                <div class="dropdown-menu vaste">
+                  <div class="list-group nopad">
+                    <a href="#" class="list-group-item active">
+                      <div class="media">
+                        <div class="media-left">
+                            <img class="media-object user-pic" src="./includes/img/pic.jpg" alt="...">
+                        </div>
+                        <div class="media-body">
+                          <h5>here goes the text of the notification</h5>
+                        </div>
+                      </div>
+                    </a>
+                    <a href="#" class="list-group-item">Dapibus ac ("(yé"(yfacilisis in</a>
+                    <a href="#" class="list-group-item">Morbi lezy"yé"eo ré"(yé(isus</a>
+                    <a href="#" class="list-group-item">Porta ac consecte(y(é"y-(tur ac</a>
+                    <a href="#" class="list-group-item">Vestibtehzethul"é("-é"-"-"-"-é"um at eros</a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+    </nav>
+    </div>
+    </div>
+  </div>
+</head>
+
+<!--     ---------------- Modals --------------- -->
+
+<div class="modal fade sign-in-modal" tabindex="-1" role="dialog" aria-labelledby="Sign In">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Sign In</h4>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Sign in</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade sign-up-modal" tabindex="-1" role="dialog" aria-labelledby="Sign In">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="exampleModalLabel">Sign In</h4>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="UserName">User Name</label>
+            <input type="username" class="form-control" id="username" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="Email">Email address</label>
+            <input type="email" class="form-control" id="email" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control" id="pass" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <label for="ConfirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="confPass" placeholder="Email">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Sign in</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--     ----------- End Modals    --------------  -->
+
+<body>
+<div class="container">
+    <div ng-view></div>
+</div>
+</body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<link rel="stylesheet" href="includes/css/bootstrap.min.css">
+<link rel="stylesheet" href="includes/css/mine.css">
+<link rel="stylesheet" href="includes/css/font-awesome.css">
+<script src="includes/js/bootstrap.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-resource.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+<script src="https://cdn.jsdelivr.net/ngstorage/0.3.6/ngStorage.min.js"></script>
+<script src="http://monospaced.github.io/angular-elastic/elastic.js"></script>
+<script src="includes/js/ng-infinite-scroll.min.js"></script>
+<script src="scripts/app.js"></script>
+<script src="scripts/services/services.js"></script>
+<script src="scripts/controllers/controllers.js"></script>
+<script src="scripts/directives/directives.js"></script>
+
+</html>

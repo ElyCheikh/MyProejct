@@ -1,0 +1,241 @@
+<div class="container">
+  <div ng-controller="ViewprofileCtrl">
+
+    <div class="row">
+      <!-----------------------------------------   jumbotron   -------------------->
+      <div class="col-md-12 col-sm-12 col-lg-12 jumbotron">
+        <div class="pull-left">
+          <img src="{{hisprofile.picture}}" alt="..." class="img-rounded pr-pic">
+          <!-- <div class="home text-center">
+            <div file-upload class="element">
+              <button id="openFile"  class="btn btn-default btn-xs"><i class="fa fa-paperclip "></i>Chosir</button>
+              <input file-model="myFile" type="file" name="myfile" id="inputfile">
+              <button type="submit" ng-click="picture()" class="btn btn-default btn-xs">Changer</button><br>
+              <small class="name"></small>
+            </div>
+          </div> -->
+        </div>
+        <div class="col-offset-2 col-md-8">
+
+          <ul class="nav nav-pills navpills" role="tablist">
+            <li role="presentation" class="active"><a data-target="#profile" aria-controls="profile" role="tab" data-toggle="tab"><strong><small>Profile</small></strong></a></li>
+            <li role="presentation"><a data-target="#apropos" aria-controls="apropos" role="tab" data-toggle="tab"><strong><small>À propos</small></strong></a></li>
+            <li role="presentation"><a data-target="#ic" aria-controls="ic" role="tab" data-toggle="tab"><strong><small>Cmpts & Itrts</small></strong></a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="tab-content">
+
+            <div role="tabpanel" class="tab-pane active" id="profile" style=" padding-left: 20px;"> <br>
+              <strong class="lus">{{hisprofile.last_name}} {{hisprofile.first_name}}</strong><br>
+              <strong class="lus"> ({{hisprofile.username}})</strong><br>
+              <!-- <button type="submit" ng-click="sendRequest(hisprofile._id)" class="margfour btn btn-default btn-xs"><i class="fa fa-user-plus"></i> Envoyer une Demande</button><br> -->
+              <div ng-if="relation == null">
+                <button type="submit" ng-click="sendRequest(hisprofile._id)" class="margfour btn btn-default btn-xs"><i class="fa fa-user-plus"></i>&nbsp;suivre</button><br>
+              </div>
+              <div ng-if="relation == false">
+                <button type="submit" ng-click="" class="margfour btn btn-default btn-xs"><i class="fa fa-arrow-right"></i>&nbsp;demandé</button><br>
+              </div>
+              <div ng-if="relation == true">
+                <button type="submit" ng-click="" class="margfour btn btn-default btn-xs"><i class="fa fa-check"></i>&nbsp;suivi</button><br>
+              </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="apropos">
+              <div class="row">
+                <div class="col-md-1"><br>
+                  <i class="fa fa-envelope" style=" padding-left: 30px;"></i><br>
+                  <i class="fa fa-user" style=" padding-left: 30px;"></i><br>
+                  <i class="fa fa-phone-square" style=" padding-left: 30px;"></i><br>
+                  <i class="fa fa-birthday-cake" style=" padding-left: 30px;"></i><br>
+                </div>
+                <div class="col-md-3"><br>
+                  <strong><small>{{hisprofile.email}}</small></strong><br>
+                  <strong><small>{{hisprofile.username}}</small></strong><br>
+                  <strong><small>{{hisprofile.phone}}</small></strong><br>
+                  <strong><small>{{hisprofile.dob | date}}</small></strong><br>
+                </div>
+                <div class="col-md-1"><br><br>
+                  <i class="fa fa-transgender" style=" padding-left: 30px;"></i><br>
+                  <i class="fa fa-map-marker" style=" padding-left: 30px;"></i><br>
+                  <i class="fa fa-flag" style=" padding-left: 30px;"></i><br>
+                </div>
+                <div class="col-md-3"><br><br>
+                  <strong><small>{{hisprofile.gender}}</small></strong><br>
+                  <strong><small>{{hisprofile.from}}</small></strong><br>
+                  <strong><small>{{hisprofile.created | date}}</small></strong>
+                </div>
+                <div class="col-md-4">
+                  <strong><small>Compétences:</small></strong><br>
+                  <div class=" text-center">
+                    <span class="label label-default " ng-repeat="tag in hisprofile.interests">
+                      {{tag.tag}}
+                        <a role="button" class="aCol" ng-click="deleteic(1, tag._id)" name="button"><span class="glyphicon glyphicon-remove"></span></a>
+                    </span>
+                  </div>
+                  <strong><small>Interests:</small></strong><br>
+                  <div class="text-center">
+                    <span class="label label-default " ng-repeat="tag in hisprofile.skills">
+                      {{tag.tag}}
+                      <a role="button" class="aCol" ng-click="deleteic(2, tag._id)" name="button"><span class="glyphicon glyphicon-remove"></span></a>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="">
+          tara
+        </div>
+      </div>
+      <!-- <ul class="ul" >
+                          <li><i class="fa fa-envelope"> </i>&nbsp;{{userConn.email}}</li>
+                          <li><i class="fa fa-user"></i> &nbsp; Username</li>
+                          <li><i class="fa fa-clock-o"></i> &nbsp; Join</li>
+                        </ul> -->
+
+      <!--  Collapsing pannels -->
+      <div class="row">
+        <!----------------------------------------   Collapsing pannles            -->
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            Collapsible Group Item #1
+          </a>
+        </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  1
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Collapsible Group Item #2
+          </a>
+        </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                  2
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+          <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Collapsible Group Item #3
+          </a>
+        </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                  3
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!----------------------------------------------------   thumbnails   -->
+        <!-- <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <a href="" class="thumbnail thumpr">
+            <img src="../includes/img/cover1.jpg" alt="myCover1InThumbnail">
+          </a>
+          <h3>Theme 1</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+          <a href="" class="btn btn-primary"> View </a>
+        </div> -->
+        <div class="col-lg-6 col-md-6 ">
+          <div ng-show="postLength" class="alert alert-info alert-dismissible text-center" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <label>{{postmessage}}</label>
+          </div>
+          <div ng-repeat="post in posts">
+            <div class="thumbnail">
+              <div class="caption">
+                <div class="row">
+                  <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10">
+                    <div class="media">
+                      <div class="media-left pull-left ">
+                        <div>
+                          <a href="#/viewprofile/{{post.account._id}}"><img class="media-object user-pic" src="{{post.account.picture}}" alt="..."> </a>
+                        </div>
+                      </div>
+                      <div class="media-body">
+                        <div>
+                          <a href="#/viewprofile/{{post.account._id}}"><strong class="media-heading">{{post.account.username}}</strong></a><br>
+                        </div>
+                        <small ng-if="(Date | date:'dd/MM/yyyy') == (post.created | date:'dd/MM/yyyy')">
+                          {{post.created | date : 'HH:mm'}}<br>
+                        </small>
+                        <small ng-if="(Date | date:'dd/MM/yyyy') != (post.created | date:'dd/MM/yyyy') ">
+                          {{post.created | date}}
+                        </small><br>
+                      </div>
+                    </div><br>
+                  </div>
+                  <div class="col-md-2 col-md-2 col-sm-2 col-lg-2 col-xs-2">
+                    <div class="pull-right">
+                      <div class="dropdown">
+                        <a id="dLabel" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <span <i class="fa fa-chevron-down" aria-hidden="true"></i></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right tiny" aria-labelledby="dLabel">
+                          <li ng-if="post.account._id == userConn._id"><a type="button" ng-click="deletePost(post._id)">Delete</a></li>
+                          <li ng-if="post.account._id != userConn._id"><a ng-href="">Enregiter</a></li>
+                          <li><a ng-href="">Another action</a></li>
+                          <li><a ng-href="">Something else</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p class="lus" ng-hide="{{post.desc === 'undefined'}}"> {{post.desc}} </p>
+              </div>
+              <div ng-if="post.mime.includes('image')">
+                <img src="{{post.path}}" alt="...">
+              </div>
+              <div ng-if="post.mime.includes('video')">
+                <video controls>
+                  <source src="{{post.path}}" type="video/mp4" >
+                  <source src="{{post.path}}" type="video/webm" >
+                  </video>
+              </div>
+              <div class="row" ng-if="post.mime.includes('application')">
+                <div class="col-md-10 col-sm-10 col-lg-10 col-xs-10">
+                  <div class="media">
+                    <div class="media-left pull-left ">
+                      <a href="{{post.path}}">
+                        <img class="media-object doc-pic" src="./includes/img/docs.png" alt="...">
+                      </a>
+                    </div>
+                    <div class="media-body">
+                      <strong class="media-heading">{{post.original}}</strong><br>
+                      <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                        <a href="{{post.path}}" type="button" TARGET="_blank" class="btn btn-default">Ouvrir</a>
+                        <a href="{{post.path}}" download="{{post.original}}" type="button" class="btn btn-default">Telecharger</a>
+                      </div>
+                    </div>
+                  </div><br>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
